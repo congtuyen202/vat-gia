@@ -14,6 +14,16 @@ function showCategories($categories, $parent_id = 0, $char = '')
         }
     }
 }
+function edit($categories,$category, $parent_id = 0, $char = '')
+{
+    foreach ($categories as $key => $item) {
+        if ($item->parent_id == $parent_id) {
+            echo '<option '.($category->parent_id == $item->id ? "selected" : "").' value="' . $item->id . '">' . $char . $item->name . '</option>';
+            unset($categories[$key]);
+            edit($categories,$category, $item->id, $char . '-- ');
+        }
+    }
+}
 
 ?>
 <div class="card card-primary">
@@ -33,24 +43,23 @@ function showCategories($categories, $parent_id = 0, $char = '')
                 <label for="parent_id">Cấp danh mục</label>
                 <select name="parent_id" class="form-control" id="parent_id">
                     @if(isset($category))
-                        <option {{($category->parent_id == 0) ? 'selected' : ''}} value="0">Danh mục cha</option>
-                        <?php
-                            if(isset($category_list_parent)) {
-                                showCategories($category_list_parent);
-                            }
-                        ?>
+                    <option {{($category->parent_id == 0) ? 'selected' : ''}} value="0">Danh mục cha</option>
+                    <?php if (isset($category_list_parent)) {
+                        edit($category_list_parent, $category);
+                    }
+                    ?>
                     @else
-                        <option value="0">Danh mục cha</option>
-                        <?php if (isset($category_list_parent)) {
-                            showCategories($category_list_parent);
-                        }
+                    <option value="0">Danh mục cha</option>
+                    <?php if (isset($category_list_parent)) {
+                        showCategories($category_list_parent);
+                    }
                     ?>
                     @endif
                 </select>
             </div>
             <div class="form-group">
                 <label for="type">Loại danh mục</label>
-                <select name="type" class="form-control" id="type"> 
+                <select name="type" class="form-control" id="type">
                     @if(isset($category))
                     <option {{($category->type == 0) ? 'selected' : ''}} value="0">Danh mục sản phẩm</option>
                     <option {{($category->type == 1) ? 'selected' : ''}} value="1">Danh mục blog</option>
@@ -98,7 +107,7 @@ function showCategories($categories, $parent_id = 0, $char = '')
                         <th>Mô Tả</th>
                         <th>Trạng Thái</th>
                         <th>Loại</th>
-                        <th class="text-center" colspan="2">Chức Năng</th>
+                        <th class="text-center" colspan="2"><a class="btn btn-success" href="{{route('admin.categories.list')}}">Tạo mới</a></th>
                     </tr>
                 </thead>
                 <tbody>

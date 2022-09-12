@@ -40,29 +40,52 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr style="line-height:80px;">
-                        <td>1</td>
-                        <td>Ổ cứng SSD 128GB Lexar NS100 2.5-Inch SATA III</td>
-                        <td>{{number_format(800000, 0, '', ' ')}}</td>
-                        <td>{{number_format(399000, 0, '', ' ')}}</td>
-                        <td><img src="https://tuanphong.vn/pictures/full/2019/01/1546831917-691-o-cung-ssd-128gb-lexar-ns100-2.jpg" alt="" width="100"></td>
-                        <td>Ổ cứng SSD 2.5-Inch</td>
-                        <td>Lexar</td>
-                        <td>100</td>
-                        <td>
-                            <form action="#" method="post">
-                                <button class="btn btn-warning " type="submit">Hiện</button>
-                            </form>
-                        </td>
-                        <td class="text-center">
-                            <a href="#" class="btn btn-info" >
-                                <i class="fas fa-edit left"></i>
-                            </a>
-                            <a href="#" class="btn btn-danger" >
-                                <i class="fas fa-trash right"></i>
-                            </a>
-                        </td>
-                    </tr>
+                    @foreach($product_list as $item)
+                        <tr style="line-height:80px;">
+                            <td>{{$item->id}}</td>
+                            <td>{{$item->name}}</td>
+                            <td>{{number_format($item->price, 0, '', ' ')}}</td>
+                            <td>{{number_format($item->price_sale, 0, '', ' ')}}</td>
+                            <td><img src="{{asset($item->images)}}" alt="" width="100"></td>
+                            <td>{{$item->category->name}}</td>
+                            <td>{{$item->brand->name}}</td>
+                            <td>{{$item->quantity}}</td>
+                            @if($item->status == 1)
+                            <td>
+                                <form action="{{route('admin.products.upStatus', $item->id)}}" method="post">
+                                    @csrf
+                                    <button class="btn btn-success" type="submit">Hiện</button>
+                                </form>
+                            </td>
+                            @else
+                            <td>
+                                <form action="{{route('admin.products.upStatus', $item->id)}}" method="post">
+                                    @csrf
+                                    <button class="btn btn-warning" type="submit">Ẩn</button>
+                                </form>
+                            </td>
+                            @endif
+                            <td class="text-right">
+                                <form action="{{route('admin.products.getUpdate', $item->id)}}" class="form-group" method="get">
+                                    @csrf
+                                    <button class="btn btn-info">
+                                        <i class="fas fa-edit left"></i>
+                                    </button>
+
+                                </form>
+                            </td>
+                            <td class="text-left">
+                                <form action="{{route('admin.products.delete', $item->id)}}" class="form-group" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger" onclick="return confirm('Xóa thương hiệu đồng sẽ xóa toàn bộ sản phẩm có liên quan.\nBạn chắc chứ?')" type="submit">
+                                        <i class="fas fa-trash right"></i>
+                                    </button>
+
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

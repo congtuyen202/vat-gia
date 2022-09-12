@@ -31,6 +31,7 @@ Route::prefix('/admin')->name('admin.')->group(function () {
         Route::get('/cap-nhat/{id}', [UserController::class, 'getUpdate'])->name('getUpdate');
         Route::post('/cap-nhat/{id}', [UserController::class, 'postUpdate'])->name('postUpdate');
         Route::delete('/xoa/{id}', [UserController::class, 'delete'])->name('delete');
+        Route::post('/cap-nhat-trang-thai/{id}', [UserController::class, 'upStatus'])->name('upStatus');
     });
     // =============================== product ============================================
     Route::prefix('/product')->name('products.')->group(function () {
@@ -40,6 +41,7 @@ Route::prefix('/admin')->name('admin.')->group(function () {
         Route::get('/cap-nhat/{id}', [ProductController::class, 'getUpdate'])->name('getUpdate');
         Route::post('/cap-nhat/{id}', [ProductController::class, 'postUpdate'])->name('postUpdate');
         Route::delete('/xoa/{id}', [ProductController::class, 'delete'])->name('delete');
+        Route::post('/cap-nhat-trang-thai/{id}', [ProductController::class, 'upStatus'])->name('upStatus');
     });
     // =============================== category ============================================
     Route::prefix('/category')->name('categories.')->group(function () {
